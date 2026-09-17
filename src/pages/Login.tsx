@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { trackEvent } from '../utils/analytics';
+
+// Render (plan gratuito) "duerme" el backend tras ~15 min sin tráfico; la
+// primera petición que lo despierta puede tardar 30-60s. Pasado este umbral
+// mostramos un aviso para que no parezca que la app quedó congelada.
+const SLOW_CONNECTION_THRESHOLD_MS = 4000;
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,7 +15,9 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSlow, setIsSlow] = useState(false);
   const [error, setError] = useState('');
+  const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -18,11 +25,14 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setIsSlow(false);
     setError('');
+
+    slowTimerRef.current = setTimeout(() => setIsSlow(true), SLOW_CONNECTION_THRESHOLD_MS);
 
     try {
       const success = await login({ correo: email, password });
-      
+
       if (success) {
         trackEvent('login', { method: 'password' });
         navigate('/dashboard');
@@ -31,10 +41,10 @@ const Login: React.FC = () => {
     } catch (err: any) {
       trackEvent('login_failed');
       console.error('Error al iniciar sesión:', err);
-      
+
       // Extraer el mensaje de error
       let errorMessage = 'Error desconocido al iniciar sesión';
-      
+
       if (err?.message) {
         errorMessage = err.message;
       } else if (err?.response?.data) {
@@ -44,9 +54,15 @@ const Login: React.FC = () => {
           errorMessage = err.response.data.message;
         }
       }
-      
+
       setError(errorMessage);
       setIsLoading(false);
+    } finally {
+      if (slowTimerRef.current) {
+        clearTimeout(slowTimerRef.current);
+        slowTimerRef.current = null;
+      }
+      setIsSlow(false);
     }
   };
 
@@ -167,6 +183,11 @@ const Login: React.FC = () => {
                   'Login'
                 )}
               </button>
+              {isSlow && (
+                <p className="mt-3 text-sm text-gray-500 text-center">
+                  El servidor estaba inactivo y está despertando, esto puede tardar hasta un minuto la primera vez...
+                </p>
+              )}
             </div>
           </form>
         </div>
