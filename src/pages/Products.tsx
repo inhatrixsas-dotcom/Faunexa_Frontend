@@ -452,7 +452,10 @@ const Products: React.FC = () => {
                 <div className="mt-3 bg-purple-50 border border-purple-200 rounded-md p-3 flex items-start">
                   <Syringe className="h-5 w-5 text-purple-600 mr-2 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-purple-800">
-                    <p className="font-medium">✓ Producto marcado como vacuna</p>
+                    <p className="font-medium inline-flex items-center gap-1">
+                      <span className="material-icons text-sm align-middle">check_circle</span>
+                      Producto marcado como vacuna
+                    </p>
                     <p className="mt-1">
                       Este producto aparecerá en el listado de vacunas disponibles al registrar aplicaciones de vacunación.
                     </p>

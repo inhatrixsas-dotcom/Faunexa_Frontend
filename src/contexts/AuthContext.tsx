@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { User, LoginRequest, LoginResponse } from '../types/types';
+import type { User, LoginRequest } from '../types/types';
 import { userAPI } from '../services/api';
 
 interface AuthContextType {
@@ -122,8 +122,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setToken(null);
     setUser(null);
+    // Limpiar todo lo asociado a la sesión para que el siguiente login
+    // (de este u otro usuario/tenant en el mismo navegador) no arrastre
+    // datos del usuario anterior.
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('selectedTenantId');
+    localStorage.removeItem('shoppingCart');
+    localStorage.removeItem('cartClientId');
+    localStorage.removeItem('cartClientName');
   };
 
   const value: AuthContextType = {

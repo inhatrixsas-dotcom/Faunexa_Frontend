@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { trackPageView } from './utils/analytics';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { TenantProvider } from './contexts/TenantContext';
 import { ShoppingCartProvider } from './contexts/ShoppingCartContext';
@@ -65,6 +66,11 @@ const RoleProtectedRoute: React.FC<{
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search, document.title);
+  }, [location]);
 
   return (
     <Routes>
@@ -123,7 +129,7 @@ function App() {
     <AuthProvider>
       <TenantProvider>
         <ShoppingCartProvider>
-        <Router>
+        <Router basename={import.meta.env.BASE_URL}>
           <div className="App">
             <AppRoutes />
           </div>

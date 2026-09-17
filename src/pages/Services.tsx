@@ -184,18 +184,6 @@ const Services: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleDelete = async (service: Service) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este servicio?')) {
-      try {
-        const serviceId = service.serviceId || parseInt(service.id || '0');
-        await serviceAPI.delete(serviceId);
-        await loadServices();
-      } catch (error) {
-        console.error('Error deleting service:', error);
-      }
-    }
-  };
-
   const handleToggleActive = async (service: Service) => {
     try {
       const updateData = {

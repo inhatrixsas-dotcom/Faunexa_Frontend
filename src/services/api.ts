@@ -266,6 +266,15 @@ export const vaccinationAPI = {
   getForInvoice: (vaccinationId: number) => api.post('/api/vaccinations/forInvoice', { id: vaccinationId }),
 };
 
+// Tenant Feature API - módulos habilitados por tenant (feature flags)
+export const tenantFeatureAPI = {
+  getMine: () => api.get('/api/tenant-features/me'),
+  getKeys: () => api.get('/api/tenant-features/keys'),
+  getForTenant: (tenantId: string) => api.get(`/api/tenant-features/${tenantId}`),
+  setFeature: (tenantId: string, featureKey: string, habilitado: boolean) =>
+    api.put(`/api/tenant-features/${tenantId}/${featureKey}`, { habilitado }),
+};
+
 // Dashboard API
 export const dashboardAPI = {
   getUserStats: () => api.get('/api/dashboard/users/stats'),

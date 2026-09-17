@@ -1,4 +1,4 @@
-# 🐾 Pet Store - Sistema de Gestión Veterinaria con IA
+# 🐾 Faunexa - Sistema de Gestión Veterinaria con IA
 
 <div align="center">
 
@@ -23,7 +23,7 @@
 
 ## 📋 Descripción
 
-**Pet Store** es una solución completa para clínicas y hospitales veterinarios que integra:
+**Faunexa** es una solución completa para clínicas y hospitales veterinarios que integra:
 
 - ✅ **Gestión Completa**: Clientes, mascotas, citas, inventario, facturación
 - 🤖 **Inteligencia Artificial**: Predicciones, análisis y chatbot inteligente
@@ -114,8 +114,8 @@ npm >= 9.0.0
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/frontend_petstore.git
-cd frontend_petstore
+git clone https://github.com/tu-usuario/frontend_faunexa.git
+cd frontend_faunexa
 
 # 2. Instalar dependencias
 npm install
@@ -363,7 +363,7 @@ Test: Tests
 
 Si encuentras un bug o tienes una sugerencia:
 
-1. Ve a [Issues](https://github.com/tu-usuario/frontend_petstore/issues)
+1. Ve a [Issues](https://github.com/tu-usuario/frontend_faunexa/issues)
 2. Crea un nuevo issue
 3. Usa las plantillas proporcionadas
 4. Sé descriptivo y adjunta screenshots si es posible
@@ -404,7 +404,7 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 ```
 MIT License
 
-Copyright (c) 2025 Pet Store
+Copyright (c) 2025 Faunexa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -436,8 +436,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## 📞 Soporte y Contacto
 
-- **Email**: soporte@petstore.com
-- **Website**: https://petstore.com
+- **Email**: soporte@faunexa.com
+- **Website**: https://faunexa.com
 - **GitHub Issues**: [Reportar bug o sugerencia]
 - **Discord**: [Unirse a la comunidad]
 
@@ -445,19 +445,19 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## 📊 Estadísticas del Proyecto
 
-![GitHub stars](https://img.shields.io/github/stars/tu-usuario/frontend_petstore?style=social)
-![GitHub forks](https://img.shields.io/github/forks/tu-usuario/frontend_petstore?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/tu-usuario/frontend_petstore?style=social)
+![GitHub stars](https://img.shields.io/github/stars/tu-usuario/frontend_faunexa?style=social)
+![GitHub forks](https://img.shields.io/github/forks/tu-usuario/frontend_faunexa?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/tu-usuario/frontend_faunexa?style=social)
 
-![Lines of code](https://img.shields.io/tokei/lines/github/tu-usuario/frontend_petstore)
-![GitHub code size](https://img.shields.io/github/languages/code-size/tu-usuario/frontend_petstore)
-![GitHub repo size](https://img.shields.io/github/repo-size/tu-usuario/frontend_petstore)
+![Lines of code](https://img.shields.io/tokei/lines/github/tu-usuario/frontend_faunexa)
+![GitHub code size](https://img.shields.io/github/languages/code-size/tu-usuario/frontend_faunexa)
+![GitHub repo size](https://img.shields.io/github/repo-size/tu-usuario/frontend_faunexa)
 
 ---
 
 <div align="center">
 
-**Hecho con ❤️ y ☕ por el equipo de Pet Store**
+**Hecho con ❤️ y ☕ por el equipo de Faunexa**
 
 ⭐ Si este proyecto te fue útil, considera darle una estrella
 

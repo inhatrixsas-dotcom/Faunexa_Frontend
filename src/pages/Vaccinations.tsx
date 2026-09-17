@@ -3,7 +3,6 @@ import {
   Search, 
   Calendar,
   Heart,
-  User,
   Syringe,
   CheckCircle,
   Clock,
@@ -1589,7 +1588,10 @@ const VaccinationsPage: React.FC = () => {
 
                     <div className="mt-4 bg-blue-50 border border-blue-200 rounded-md p-3">
                       <p className="text-sm text-blue-800">
-                        <strong>✓ Acción automática:</strong> Al guardar este refuerzo, la vacuna actual (Dosis {selectedVaccination.doseNumber}) 
+                        <strong className="inline-flex items-center gap-1">
+                          <span className="material-icons text-sm align-middle">check_circle</span>
+                          Acción automática:
+                        </strong> Al guardar este refuerzo, la vacuna actual (Dosis {selectedVaccination.doseNumber})
                         será marcada como completada y se agregará la observación: "Aplicación de refuerzo dosis {boosterFormData.doseNumber} 
                         de la vacunación ID [nueva]."
                       </p>

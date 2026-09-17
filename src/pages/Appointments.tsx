@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Plus, 
   Search, 
-  Edit, 
-  Trash2, 
-  Save, 
+  Edit,
+  Save,
   X, 
   Calendar,
   Clock,
@@ -400,18 +399,6 @@ const Appointments: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleDelete = async (appointment: Appointment) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar esta cita?')) {
-      try {
-        const appointmentId = appointment.appointmentId || parseInt(appointment.id || '0');
-        await appointmentAPI.delete(appointmentId);
-        await loadAppointments();
-      } catch (error) {
-        console.error('Error deleting appointment:', error);
-      }
-    }
-  };
-
   const handleComplete = async (appointment: Appointment) => {
     // Validar que la cita no esté cancelada (case-insensitive)
     const estadoUpper = appointment.estado?.toUpperCase() || '';
@@ -514,9 +501,8 @@ const Appointments: React.FC = () => {
 
   const getPetName = (petId: number | string | undefined) => {
     if (!petId) return 'N/A';
-    const pet = pets.find(p => 
-      p.petId === (typeof petId === 'number' ? petId : parseInt(petId.toString())) ||
-      p.id === petId.toString()
+    const pet = pets.find(p =>
+      p.petId === (typeof petId === 'number' ? petId : parseInt(petId.toString()))
     );
     return pet ? pet.nombre : 'Mascota no encontrada';
   };
@@ -591,7 +577,7 @@ const Appointments: React.FC = () => {
                 >
                   <option value="">Seleccionar mascota</option>
                   {pets.map((pet) => (
-                    <option key={pet.petId || pet.id} value={pet.petId || pet.id}>
+                    <option key={pet.petId} value={pet.petId}>
                       {pet.nombre} - {pet.tipo}
                     </option>
                   ))}

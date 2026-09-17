@@ -18,6 +18,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import { useTenant } from '../contexts/TenantContext';
 import { tenantAPI } from '../services/api';
+import { trackEvent } from '../utils/analytics';
 import type { Tenant } from '../types/types';
 
 const Layout: React.FC = () => {
@@ -26,14 +27,13 @@ const Layout: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { selectedTenantId, setSelectedTenantId } = useTenant();
-  const [tenantName, setTenantName] = useState<string>('PET STORE');
+  const [tenantName, setTenantName] = useState<string>('FAUNEXA');
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [isLoadingTenants, setIsLoadingTenants] = useState(false);
   
   // Verificar roles del usuario
   const userRolId = user?.rol_id?.toString() || '';
   const isSuperAdmin = userRolId === '1';
-  const isAdmin = userRolId === '2';
   
   // Definir todos los items de navegación con sus permisos
   const allNavigationItems = [
@@ -66,6 +66,7 @@ const Layout: React.FC = () => {
   };
 
   const handleLogout = () => {
+    trackEvent('logout');
     logout();
     navigate('/login');
   };
@@ -102,7 +103,7 @@ const Layout: React.FC = () => {
           }
         } catch (error) {
           console.error('Error al cargar el nombre del tenant:', error);
-          setTenantName('PET STORE');
+          setTenantName('FAUNEXA');
         }
       }
     };

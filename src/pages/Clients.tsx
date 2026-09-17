@@ -9,7 +9,6 @@ import {
   User,
   Mail,
   Phone,
-  MapPin,
   CreditCard,
   CheckCircle,
   XCircle

@@ -37,7 +37,7 @@ const MedicalHistoryPage: React.FC = () => {
   const [showVaccinationForm, setShowVaccinationForm] = useState(false);
   const [editingHistory, setEditingHistory] = useState<MedicalHistory | null>(null);
   const [selectedHistory, setSelectedHistory] = useState<MedicalHistory | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
   // Determinar si el usuario es propietario (solo lectura)

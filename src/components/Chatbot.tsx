@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, Send, Bot, User, AlertCircle, Loader } from 'lucide-react';
+import { Send, Bot, User, AlertCircle, Loader } from 'lucide-react';
 import { chatbotAPI } from '../services/api';
 
 interface Message {
@@ -186,7 +186,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ usuarioId = 'user123' }) => {
                 onClick={() => usarEjemplo(pregunta)}
                 className="w-full text-left text-xs p-2 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg transition-colors duration-150"
               >
-                💬 {pregunta}
+                <span className="inline-flex items-center gap-1">
+                  <span className="material-icons text-sm align-middle">chat_bubble_outline</span>
+                  {pregunta}
+                </span>
               </button>
             ))}
           </div>

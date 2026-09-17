@@ -16,13 +16,7 @@ interface TenantProviderProps {
 export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   const { user } = useAuth();
   const [selectedTenantId, setSelectedTenantIdState] = useState<string | null>(null);
-
-  // Inicializar con el tenant del usuario autenticado
-  useEffect(() => {
-    if (user?.tenantId) {
-      setSelectedTenantIdState(user.tenantId);
-    }
-  }, [user?.tenantId]);
+  const isSuperAdmin = user?.rol_id?.toString() === '1';
 
   const setSelectedTenantId = (tenantId: string | null) => {
     setSelectedTenantIdState(tenantId);
@@ -34,18 +28,24 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
     }
   };
 
-  // Cargar tenant seleccionado desde localStorage al iniciar
+  // Inicializar/actualizar el tenant activo cada vez que cambia el usuario autenticado.
+  // Solo un SuperAdmin puede navegar tenants distintos al suyo (y por eso se respeta un
+  // valor guardado en localStorage para él); cualquier otro usuario usa siempre su propio
+  // tenantId, para no arrastrar el tenant seleccionado por una sesión anterior de otro usuario.
   useEffect(() => {
-    const storedTenantId = localStorage.getItem('selectedTenantId');
-    if (storedTenantId) {
-      setSelectedTenantIdState(storedTenantId);
-      // Guardar en localStorage si no está
-      localStorage.setItem('selectedTenantId', storedTenantId);
-    } else if (user?.tenantId) {
+    if (!user) {
+      setSelectedTenantIdState(null);
+      return;
+    }
+
+    if (isSuperAdmin) {
+      const storedTenantId = localStorage.getItem('selectedTenantId');
+      setSelectedTenantIdState(storedTenantId || user.tenantId || null);
+    } else if (user.tenantId) {
       setSelectedTenantIdState(user.tenantId);
       localStorage.setItem('selectedTenantId', user.tenantId);
     }
-  }, [user?.tenantId]);
+  }, [user, isSuperAdmin]);
 
   // Obtener el tenant activo: si es SuperAdmin puede seleccionar, si no usa el suyo
   const activeTenantId = selectedTenantId || user?.tenantId || null;

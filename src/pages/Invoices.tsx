@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Plus, 
   Search, 
@@ -44,7 +44,7 @@ const Invoices: React.FC = () => {
   const [employees, setEmployees] = useState<UserType[]>([]);
   const [pets, setPets] = useState<Pet[]>([]);
   const [selectedClient, setSelectedClient] = useState<ClientResponseDto | null>(null);
-  const [selectedEmployee, setSelectedEmployee] = useState<UserType | null>(null);
+  const [, setSelectedEmployee] = useState<UserType | null>(null);
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [petAppointments, setPetAppointments] = useState<Appointment[]>([]);
   const [petVaccinations, setPetVaccinations] = useState<Vaccination[]>([]);
@@ -69,7 +69,7 @@ const Invoices: React.FC = () => {
     data: filteredInvoices,
     itemsPerPage: 10
   });
-  const { cartItems, cartCount, clientId: cartClientId, clientName: cartClientName, clearCart } = useShoppingCart();
+  const { cartItems, cartCount, clientId: cartClientId, clearCart } = useShoppingCart();
   
   // Form data
   const [formData, setFormData] = useState({
@@ -92,8 +92,6 @@ const Invoices: React.FC = () => {
     descuento: 0,
     subtotal: 0
   });
-
-  const printRef = useRef<HTMLDivElement>(null);
 
   // Load data on mount
   useEffect(() => {
@@ -667,7 +665,7 @@ const Invoices: React.FC = () => {
     
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text('PetStore - Sistema de Gestión Veterinaria', 105, 28, { align: 'center' });
+    doc.text('Faunexa - Sistema de Gestión Veterinaria', 105, 28, { align: 'center' });
     
     // Información de la factura
     doc.setFontSize(12);
@@ -867,7 +865,7 @@ const Invoices: React.FC = () => {
       </head>
       <body>
         <div class="header center">
-          <div class="bold" style="font-size: 16px;">PETSTORE</div>
+          <div class="bold" style="font-size: 16px;">FAUNEXA</div>
           <div>Sistema de Gestión Veterinaria</div>
           <div class="line"></div>
           <div class="bold">FACTURA DE VENTA</div>

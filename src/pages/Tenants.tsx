@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Plus, Edit2, Trash2, Search, CheckCircle, XCircle } from 'lucide-react';
+import { Building2, Plus, Edit2, Search, CheckCircle, XCircle } from 'lucide-react';
 import { tenantAPI } from '../services/api';
 import type { Tenant } from '../types/types';
 import { usePagination } from '../hooks/usePagination';

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Heart } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { trackEvent } from '../utils/analytics';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -23,10 +24,12 @@ const Login: React.FC = () => {
       const success = await login({ correo: email, password });
       
       if (success) {
+        trackEvent('login', { method: 'password' });
         navigate('/dashboard');
       }
       // Si success es false, el error ya fue lanzado en el catch del login
     } catch (err: any) {
+      trackEvent('login_failed');
       console.error('Error al iniciar sesión:', err);
       
       // Extraer el mensaje de error
