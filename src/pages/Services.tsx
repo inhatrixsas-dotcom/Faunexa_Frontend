@@ -467,7 +467,7 @@ const Services: React.FC = () => {
           <div className="mt-6 flex space-x-4">
             <button 
               className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 flex items-center space-x-2"
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = import.meta.env.BASE_URL}
             >
               <span>Regresar al Menú Principal</span>
             </button>

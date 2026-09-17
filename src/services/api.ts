@@ -38,10 +38,11 @@ api.interceptors.response.use(
   (error) => {
     // Solo redirigir a login si ya estamos autenticados y recibimos 401
     // No redirigir si estamos en la página de login (para mostrar el error)
-    if (error.response?.status === 401 && window.location.pathname !== '/login') {
+    const loginPath = `${import.meta.env.BASE_URL}login`;
+    if (error.response?.status === 401 && window.location.pathname !== loginPath) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      window.location.href = loginPath;
     }
     console.log(error);
     return Promise.reject(error);
