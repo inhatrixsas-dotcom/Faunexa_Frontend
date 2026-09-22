@@ -15,9 +15,12 @@ import type { Service } from '../types/types';
 import { useAuth } from '../contexts/AuthContext';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
+import { useTenant } from '../contexts/TenantContext';
+import { confirmCreateInTenant } from '../utils/tenantConfirm';
 
 const Services: React.FC = () => {
   const { user } = useAuth();
+  const { isSuperAdmin, tenantName } = useTenant();
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -87,6 +90,9 @@ const Services: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!editingService && !confirmCreateInTenant(isSuperAdmin, tenantName)) {
+      return;
+    }
     try {
       if (editingService) {
         // Preparar datos para actualización según Service model del backend

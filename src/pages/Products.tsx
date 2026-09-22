@@ -17,8 +17,11 @@ import { productAPI } from '../services/api';
 import type { Product } from '../types/types';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
+import { useTenant } from '../contexts/TenantContext';
+import { confirmCreateInTenant } from '../utils/tenantConfirm';
 
 const Products: React.FC = () => {
+  const { isSuperAdmin, tenantName } = useTenant();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -121,6 +124,9 @@ const Products: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!editingProduct && !confirmCreateInTenant(isSuperAdmin, tenantName)) {
+      return;
+    }
     try {
       if (editingProduct) {
         // Preparar datos para actualización según Product model del backend

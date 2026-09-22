@@ -17,8 +17,11 @@ import { clientAPI } from '../services/api';
 import type { ClientResponseDto, ClientCreateDto, UpdateClientRequest } from '../types/types';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
+import { useTenant } from '../contexts/TenantContext';
+import { confirmCreateInTenant } from '../utils/tenantConfirm';
 
 const Clients: React.FC = () => {
+  const { isSuperAdmin, tenantName } = useTenant();
   const [clients, setClients] = useState<ClientResponseDto[]>([]);
   const [filteredClients, setFilteredClients] = useState<ClientResponseDto[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,6 +88,9 @@ const Clients: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!editingClient && !confirmCreateInTenant(isSuperAdmin, tenantName)) {
+      return;
+    }
     try {
       if (editingClient) {
         const updateData: UpdateClientRequest = {

@@ -12,6 +12,8 @@ import { petAPI, clientAPI, rolesAPI } from '../services/api';
 import type { Pet, ClientResponseDto, OwnerInfoDto } from '../types/types';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
+import { useTenant } from '../contexts/TenantContext';
+import { confirmCreateInTenant } from '../utils/tenantConfirm';
 
 /** Campos de dueño tal como los envía el API (OwnerInfoDto o legacy User). */
 function ownerDisplayFields(owner: OwnerInfoDto | Record<string, unknown> | undefined): {
@@ -59,6 +61,7 @@ function normalizePetsPayload(raw: unknown): Pet[] {
 }
 
 const Pets: React.FC = () => {
+  const { isSuperAdmin, tenantName } = useTenant();
   const [pets, setPets] = useState<Pet[]>([]);
   const [filteredPets, setFilteredPets] = useState<Pet[]>([]);
   const [owners, setOwners] = useState<ClientResponseDto[]>([]);
@@ -196,6 +199,10 @@ const Pets: React.FC = () => {
     // Validar que haya al menos un propietario
     if (formData.ownerIds.length === 0) {
       alert('Debe seleccionar al menos un propietario');
+      return;
+    }
+
+    if (!editingPet && !confirmCreateInTenant(isSuperAdmin, tenantName)) {
       return;
     }
 

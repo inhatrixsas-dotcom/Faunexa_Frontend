@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, 
@@ -17,23 +17,17 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTenant } from '../contexts/TenantContext';
-import { tenantAPI } from '../services/api';
 import { trackEvent } from '../utils/analytics';
-import type { Tenant } from '../types/types';
 
 const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { selectedTenantId, setSelectedTenantId } = useTenant();
-  const [tenantName, setTenantName] = useState<string>('FAUNEXA');
-  const [tenants, setTenants] = useState<Tenant[]>([]);
-  const [isLoadingTenants, setIsLoadingTenants] = useState(false);
-  
+  const { selectedTenantId, setSelectedTenantId, tenantName, isSuperAdmin, tenants, isLoadingTenants } = useTenant();
+
   // Verificar roles del usuario
   const userRolId = user?.rol_id?.toString() || '';
-  const isSuperAdmin = userRolId === '1';
   
   // Definir todos los items de navegación con sus permisos
   const allNavigationItems = [
@@ -70,46 +64,6 @@ const Layout: React.FC = () => {
     logout();
     navigate('/login');
   };
-
-  // Cargar todos los tenants si es SuperAdmin
-  useEffect(() => {
-    if (isSuperAdmin) {
-      const loadTenants = async () => {
-        try {
-          setIsLoadingTenants(true);
-          const response = await tenantAPI.getAll();
-          if (Array.isArray(response.data)) {
-            setTenants(response.data);
-          }
-        } catch (error) {
-          console.error('Error loading tenants:', error);
-        } finally {
-          setIsLoadingTenants(false);
-        }
-      };
-      loadTenants();
-    }
-  }, [isSuperAdmin]);
-
-  // Cargar el nombre del tenant cuando el tenant seleccionado cambie
-  useEffect(() => {
-    const loadTenantName = async () => {
-      const tenantIdToLoad = selectedTenantId || user?.tenantId;
-      if (tenantIdToLoad) {
-        try {
-          const response = await tenantAPI.getById(tenantIdToLoad);
-          if (response && response.data && response.data.razonSocial) {
-            setTenantName(response.data.razonSocial);
-          }
-        } catch (error) {
-          console.error('Error al cargar el nombre del tenant:', error);
-          setTenantName('FAUNEXA');
-        }
-      }
-    };
-
-    loadTenantName();
-  }, [selectedTenantId, user?.tenantId]);
 
   const handleTenantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newTenantId = event.target.value || null;
@@ -220,15 +174,15 @@ const Layout: React.FC = () => {
               {/* Selector de Tenant para SuperAdmin */}
               {isSuperAdmin && (
                 <div className="ml-auto flex items-center space-x-2">
-                  <label htmlFor="tenant-select" className="text-sm font-medium text-gray-700">
-                    Tenant:
+                  <label htmlFor="tenant-select" className="text-sm font-bold text-amber-800">
+                    Tenant activo:
                   </label>
                   <select
                     id="tenant-select"
                     value={selectedTenantId || ''}
                     onChange={handleTenantChange}
                     disabled={isLoadingTenants}
-                    className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
+                    className="px-3 py-1.5 border-2 border-amber-400 rounded-md text-sm font-semibold text-amber-900 bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   >
                     <option value="">Seleccionar tenant</option>
                     {tenants.map((tenant) => (
@@ -241,6 +195,18 @@ const Layout: React.FC = () => {
               )}
             </div>
           </div>
+
+          {/* Aviso permanente del tenant activo: como SuperAdmin puedes trabajar en
+              cualquier tenant, este aviso evita crear/editar registros en el tenant
+              equivocado por haber olvidado cuál estaba seleccionado. */}
+          {isSuperAdmin && (
+            <div className="bg-amber-100 border-t border-amber-300 px-4 py-1.5 flex items-center justify-center">
+              <Building2 className="h-4 w-4 text-amber-800 mr-2 flex-shrink-0" />
+              <span className="text-sm text-amber-900">
+                Estás trabajando en el tenant: <strong>{tenantName}</strong>. Todo lo que crees o edites quedará en este tenant.
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Page content */}

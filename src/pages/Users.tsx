@@ -12,8 +12,11 @@ import { userAPI, rolesAPI } from '../services/api';
 import type { User, Role } from '../types/types';
 import { usePagination } from '../hooks/usePagination';
 import Pagination from '../components/Pagination';
+import { useTenant } from '../contexts/TenantContext';
+import { confirmCreateInTenant } from '../utils/tenantConfirm';
 
 const Users: React.FC = () => {
+  const { isSuperAdmin, tenantName } = useTenant();
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -143,7 +146,11 @@ const Users: React.FC = () => {
     
     // El rolId debe enviarse como string según el DTO del backend
     const rolIdToSend = formData.rolId.toString();
-    
+
+    if (!editingUser && !confirmCreateInTenant(isSuperAdmin, tenantName)) {
+      return;
+    }
+
     try {
       if (editingUser) {
         // Preparar datos para actualización según UpdateUserRequest
