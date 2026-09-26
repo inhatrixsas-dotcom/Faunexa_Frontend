@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs.plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // GitHub Pages sirve este proyecto en /Faunexa_Frontend/, no en la raíz del dominio.
-base: process.env.VERCEL ? '/' : '/Faunexa_Frontend/',
+  base: process.env.VERCEL || process.env.CI ? '/' : '/Faunexa_Frontend/',
 })
