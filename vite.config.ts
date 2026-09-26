@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // GitHub Pages sirve este proyecto en /Faunexa_Frontend/, no en la raíz del dominio.
-  base: '/Faunexa_Frontend/',
+base: process.env.VERCEL ? '/' : '/Faunexa_Frontend/',
 })
